@@ -34,8 +34,19 @@ namespace gproNet
 
 		peer->Startup(MAX_CLIENTS, &sd, 1);
 		peer->SetMaximumIncomingConnections(MAX_CLIENTS);
-	}
+		isMasterServer = true; //ik this will make all servers master but its for demonstrative purpose
+		
 
+	}
+	void cRakNetServer::masterServerListCreate()
+	{
+		for (int i = 0; i < MAX_SERVERS; i++)
+		{
+			//create new server and send server into vector position
+			cRakNetServer newServer;
+			serverList.push_back(newServer);
+		}
+	}
 	cRakNetServer::~cRakNetServer()
 	{
 		peer->Shutdown(0);
@@ -51,15 +62,38 @@ namespace gproNet
 		{
 		case ID_NEW_INCOMING_CONNECTION:
 			//printf("A connection is incoming.\n");
+			//display serverlist
+			for (int i = 0; i < serverList.size(); i++)
+			{
+				//print each server
+				printf(serverList[i].SERVER_IP);
+			}
+
+			//get user input relative to a number and then connect to that servers number
+			//???
+
 			return true;
 		case ID_NO_FREE_INCOMING_CONNECTIONS:
 			//printf("The server is full.\n");
 			return true;
 		case ID_DISCONNECTION_NOTIFICATION:
 			//printf("A client has disconnected.\n");
+			//if this is a master server, stay disconnected. if it was a server in the list, reconnect to master
+
+			if (isMasterServer)
+			{
+				//stay disconnected
+			}
+			else
+			{
+				//connect to master's ip
+			}
 			return true;
+
 		case ID_CONNECTION_LOST:
 			//printf("A client lost the connection.\n");
+			
+
 			return true;
 
 			// test message

@@ -28,6 +28,7 @@
 
 
 #include "gpro-net/gpro-net/gpro-net-RakNet.hpp"
+#include <vector>
 
 
 namespace gproNet
@@ -54,6 +55,8 @@ namespace gproNet
 		//	Default constructor.
 		cRakNetServer();
 
+		void masterServerListCreate();
+
 		// ~cRakNetServer
 		//	Destructor.
 		virtual ~cRakNetServer();
@@ -67,6 +70,14 @@ namespace gproNet
 		//		param msgID: message identifier
 		//		return: was message processed
 		virtual bool ProcessMessage(RakNet::BitStream& bitstream, RakNet::SystemAddress const sender, RakNet::Time const dtSendToReceive, RakNet::MessageID const msgID);
+		//list of servers v
+		unsigned short MAX_SERVERS = 10;
+		bool isMasterServer;
+		std::vector<cRakNetServer> serverList;
+		char SERVER_IP[16] = "127.0.0.1"; //this one would be changed based on the other server's value 
+		char MASTER_IP[16] = "127.0.0.1";
+
+
 	};
 
 }
