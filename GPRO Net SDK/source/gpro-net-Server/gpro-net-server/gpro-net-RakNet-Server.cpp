@@ -40,7 +40,43 @@ namespace gproNet
 	{
 		peer->Shutdown(0);
 	}
+	// Description of spatial pose.
+	struct sSpatialPose
+	{
+		float scale[3];     // non-uniform scale
+		float rotate[3];    // orientation as Euler angles
+		float translate[3]; // translation
 
+		// read from stream
+		RakNet::BitStream& Read(RakNet::BitStream& bitstream)
+		{
+			bitstream.Read(scale[0]);
+			bitstream.Read(scale[1]);
+			bitstream.Read(scale[2]);
+			bitstream.Read(rotate[0]);
+			bitstream.Read(rotate[1]);
+			bitstream.Read(rotate[2]);
+			bitstream.Read(translate[0]);
+			bitstream.Read(translate[1]);
+			bitstream.Read(translate[2]);
+			return bitstream;
+		}
+
+		// write to stream
+		RakNet::BitStream& Write(RakNet::BitStream& bitstream) const
+		{
+			bitstream.Write(scale[0]);
+			bitstream.Write(scale[1]);
+			bitstream.Write(scale[2]);
+			bitstream.Write(rotate[0]);
+			bitstream.Write(rotate[1]);
+			bitstream.Write(rotate[2]);
+			bitstream.Write(translate[0]);
+			bitstream.Write(translate[1]);
+			bitstream.Write(translate[2]);
+			return bitstream;
+		}
+	};
 	bool cRakNetServer::ProcessMessage(RakNet::BitStream& bitstream, RakNet::SystemAddress const sender, RakNet::Time const dtSendToReceive, RakNet::MessageID const msgID)
 	{
 		if (cRakNetManager::ProcessMessage(bitstream, sender, dtSendToReceive, msgID))
